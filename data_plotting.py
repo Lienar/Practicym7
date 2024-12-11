@@ -82,8 +82,8 @@ def RSI_plot(data, period, ticker, name, stile, filename=None):
     print(f"График сохранен в {file_data[1]} имя файла {file_data[2]}")
     ''' Сообщение о создание файла с его данными '''
 
-def Standard_deviation_plot(data, period, ticker, name, stile, filename=None):
-    ''' Функция создания файла с графиком стандартного отклонения по заданным значениям '''
+def Standard_deviation_and_values_plot(data, period, ticker, name, stile, filename=None):
+    ''' Функция создания файла с графиком стандартного отклонения исходя из заданных значений '''
     plt.figure(figsize=(24, 12))
     plt.rcParams.update({'font.size': stile['font_size']})
     ''' Настройка окна графика и шрифа в нем '''
@@ -123,7 +123,55 @@ def Standard_deviation_plot(data, period, ticker, name, stile, filename=None):
     plt.grid()
     plt.legend()
     ''' Отрисовка информации по графику '''
-    file_data = ds.file_name_creator(filename, period, ticker, 'SD')
+    file_data = ds.file_name_creator(filename, period, ticker, 'SD1')
+    ''' Определение имени сохраняемого файла '''
+    plt.savefig(file_data[0])
+    ''' Сохранение графика '''
+    print(f"График сохранен в {file_data[1]} имя файла {file_data[2]}")
+    ''' Сообщение о создание файла с его данными '''
+
+def Standard_deviation_plot(data, period, ticker, name, stile, filename=None):
+    ''' Функция создания файла с графиком стандартного отклонения без привязки к значениям '''
+    plt.figure(figsize=(24, 12))
+    plt.rcParams.update({'font.size': stile['font_size']})
+    ''' Настройка окна графика и шрифа в нем '''
+    for work_object in data['dev_window']:
+        window_size = work_object
+    full_window = (window_size * 2) + 1
+    graf_names = stile['graf_names']
+    if stile[f'{graf_names[3]}_mark'] == None:
+        stile[f'{graf_names[3]}_mark'] = 'o'
+    ''' Настройка дополнительных параметров '''
+    if 'Date' not in data:
+        if pd.api.types.is_datetime64_any_dtype(data.index):
+            dates = data.index.to_numpy()
+            plt.plot(dates, data['Standart_deviation'].values, label=stile[f'{graf_names[4]}'],
+                     linestyle=stile[f'{graf_names[4]}_stile'], color=stile[f'{graf_names[4]}_color'],
+                     marker=stile[f'{graf_names[4]}_mark'], markerfacecolor=stile[f'{graf_names[4]}_mark_color'],
+                     markersize=stile[f'{graf_names[4]}_mark_size'])
+        else:
+            print("Информация о дате отсутствует или не имеет распознаваемого формата.")
+            return
+    else:
+        if not pd.api.types.is_datetime64_any_dtype(data['Date']):
+            data['Date'] = pd.to_datetime(data['Date'])
+        plt.plot(data['Date'], data['Standart_deviation'], label=stile[f'{graf_names[4]}'],
+                 linestyle=stile[f'{graf_names[4]}_stile'], color=stile[f'{graf_names[4]}_color'],
+                 marker=stile[f'{graf_names[4]}_mark'], markerfacecolor=stile[f'{graf_names[4]}_mark_color'],
+                 markersize=stile[f'{graf_names[4]}_mark_size'])
+    ''' Отрисовка графика стандартного отклонения по датам '''
+    if period[0] == 'PP':
+        plt.title(f"Стандартное отклонение для окна в {full_window} соседних значений компании {name} "
+                  f"({ticker}) за период {period[1]} ")
+    if period[0] == 'DP':
+        plt.title(f"Стандартное отклонение для окна в {full_window} соседних значений компании {name}  \n"
+                  f"({ticker}) за период c {period[1]} по {period[2]}")
+    plt.xlabel("Дата")
+    plt.ylabel("Цена закрытия")
+    plt.grid()
+    plt.legend()
+    ''' Отрисовка информации по графику '''
+    file_data = ds.file_name_creator(filename, period, ticker, 'SD2')
     ''' Определение имени сохраняемого файла '''
     plt.savefig(file_data[0])
     ''' Сохранение графика '''

@@ -25,7 +25,7 @@ def file_name_creator(filename, period, ticker, plotting_type):
                 filename = f"{ticker}_data_from_{period[1]}_to_{period[2]}_RSI"
             else:
                 filename = f"{ticker}_1mo_RSI"
-    elif plotting_type == 'SD':
+    elif plotting_type == 'SD2':
         file_path = f'{file_path}\\SD'
         if filename is None:
             if period[0] == 'PP':
@@ -34,6 +34,15 @@ def file_name_creator(filename, period, ticker, plotting_type):
                 filename = f"{ticker}_data_from_{period[1]}_to_{period[2]}_SD"
             else:
                 filename = f"{ticker}_1mo_SD"
+    elif plotting_type == 'SD1':
+        file_path = f'{file_path}\\SD'
+        if filename is None:
+            if period[0] == 'PP':
+                filename = f"{ticker}_{period[1]}_SD&V"
+            elif period[0] == 'DP':
+                filename = f"{ticker}_data_from_{period[1]}_to_{period[2]}_SD&V"
+            else:
+                filename = f"{ticker}_1mo_SD&V"
     else:
         file_path = f'{file_path}\\Default'
         if filename is None:

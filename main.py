@@ -44,8 +44,13 @@ def main():
     # Plot RSI
     #dplt.RSI_plot(rsi_data, period, ticker, name, stile)
 
+    # Creat data for Standart deviation
     SD_data = dd.data_for_standard_deviation_calculate(stock_data)
 
+    # Plot Standard deviation & values
+    dplt.Standard_deviation_and_values_plot(SD_data, period, ticker, name, stile)
+
+    # Plot Standart deviation
     dplt.Standard_deviation_plot(SD_data, period, ticker, name, stile)
 
 def period_choice():
@@ -81,7 +86,7 @@ def plotting_stile():
     is_enter = input('Хотите войти в меню: ')
     ''' Вывозапроса на вход в меню '''
     enter = 'in'
-    graf_names = ['Close Price', 'Moving Average', 'RSI', 'Standard deviation']
+    graf_names = ['Close Price', 'Moving Average', 'RSI', 'Standard dev & values', 'Standard deviation']
     stile = {'grid': True, 'font_size': 14, 'font_color': 'black', 'graf_names': graf_names}
     mark_stile = [['точка', '.'], ['ромб', 'D'], ['круг', 'o'], ['треугольник вниз', 'v'], ['треугольник вверх', '^']]
     line_stile = [['Сплошная линия', 'solid'], ['Точка-точка', 'dotted'],
